@@ -1,2 +1,0 @@
-# PeopleVocabularies
-Created with CodeSandbox
