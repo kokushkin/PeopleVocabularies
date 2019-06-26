@@ -49,10 +49,7 @@ const Uploader = () => {
         }
       }
     };
-    uploadWellKnownText();
-    return () => {
-      setUpload(false);
-    };
+    uploadWellKnownText().then(() => setUpload(false));
   }, [upload]);
 
   return (
