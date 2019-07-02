@@ -18,7 +18,7 @@ Amplify.configure(config.amplify);
 var GetVocabularyQuery = `query {
            getVocabulary {
              user
-             words
+             words             
            }
          }`;
 
@@ -90,29 +90,48 @@ function App() {
   }, [vocabulary, vocabularyExist]);
 
   return (
-    <div>
-      <section className="container m-2">
-        <div className="row">
-          <div className="col-10">
-            <div className="btn-group btn-group-lg">
-              <button className="btn">
-                <Link to="/">Trainer</Link>
-              </button>
-              <button className="btn">
-                <Link to="/uploader">Uploader</Link>
-              </button>
-              {/* <span>{user && `Hello ${user.username}!!`}</span> */}
-            </div>
-          </div>
-          <div className="col-2">
+    <>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <a className="navbar-brand" href="#">
+          People Vocabularies
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon" />
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
+            <li className="nav-item active">
+              <Link className="nav-link" href="#" to="/">
+                Trainer <span className="sr-only">(current)</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="#" to="/uploader">
+                Uploader
+              </Link>
+            </li>
+          </ul>
+          <form class="form-inline">
+            <label className="mr-2">Hello, {user && user.username}</label>
             <button
-              className="btn btn-success p-2"
+              class="btn btn-outline-success"
+              type="button"
               onClick={() => setLoggedIn(false)}
             >
-              LogOut
+              Logout
             </button>
-          </div>
+          </form>
         </div>
+      </nav>
+      <section className="container m-2">
         <div className="row">
           <Router>
             <Trainer path="/" />
@@ -120,7 +139,7 @@ function App() {
           </Router>
         </div>
       </section>
-    </div>
+    </>
   );
 }
 
