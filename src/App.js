@@ -12,6 +12,7 @@ import { Router } from "@reach/router";
 import Trainer from "./components/Trainer";
 import Uploader from "./components/Uploader";
 import { Link } from "@reach/router";
+import logo from "./assets/voclogo.png";
 
 Amplify.configure(config.amplify);
 
@@ -93,6 +94,12 @@ function App() {
     <>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">
+          <img
+            src={logo}
+            width="50"
+            className="d-inline-block align-center"
+            alt=""
+          />
           People Vocabularies
         </a>
         <button
