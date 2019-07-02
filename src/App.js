@@ -109,20 +109,24 @@ function App() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
             <li className="nav-item active">
-              <Link className="nav-link" href="#" to="/">
-                Trainer <span className="sr-only">(current)</span>
+              <Link to="/">
+                <a className="nav-link" href="#">
+                  Trainer <span className="sr-only">(current)</span>
+                </a>
               </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="#" to="/uploader">
-                Uploader
+              <Link to="/uploader">
+                <a className="nav-link" href="#">
+                  Uploader
+                </a>
               </Link>
             </li>
           </ul>
           <form class="form-inline">
             <label className="mr-2">Hello, {user && user.username}</label>
             <button
-              class="btn btn-outline-success"
+              class="btn btn-outline-warning"
               type="button"
               onClick={() => setLoggedIn(false)}
             >
