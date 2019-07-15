@@ -80,7 +80,7 @@ const Uploader = () => {
             </form>
           </div>
         </div>
-        <div className="col-md-4 col-sm-12">
+        <div className="overflow-auto col-md-4 col-sm-12">
           <ul className="list-group">
             {vocabulary &&
               vocabulary.words &&
