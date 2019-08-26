@@ -43,7 +43,7 @@ const Uploader = () => {
               text: textForUploading.current.value
             })
           );
-          console.log("We uploaded text!!");
+          console.log("We uploaded text!!!");
         } catch (ex) {
           console.log(ex);
         }
