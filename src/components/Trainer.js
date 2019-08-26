@@ -69,7 +69,7 @@ const Trainer = () => {
       <div className="row">
         <div className="col-md-8 col-sm-12">
           <div className="container">
-            <h3 className="display-4">Check text and learn new words!</h3>
+            <h3 className="display-4">Check text and learn new words!!</h3>
             <form>
               <div className="form-group">
                 <textarea
