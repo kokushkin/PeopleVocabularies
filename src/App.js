@@ -92,56 +92,59 @@ function App() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="#">
-          <img
-            src={logo}
-            width="50"
-            className="d-inline-block align-center"
-            alt=""
-          />
-          People Vocabularies
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
-            <li className="nav-item active">
-              <Link to="/">
-                <a className="nav-link" href="#">
-                  Trainer <span className="sr-only">(current)</span>
-                </a>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="/uploader">
-                <a className="nav-link" href="#">
-                  Uploader
-                </a>
-              </Link>
-            </li>
-          </ul>
-          <form class="form-inline">
-            <label className="mr-2">Hello, {user && user.username}</label>
-            <button
-              class="btn btn-outline-warning"
-              type="button"
-              onClick={() => setLoggedIn(false)}
-            >
-              Logout
-            </button>
-          </form>
-        </div>
-      </nav>
+      <header>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <a className="navbar-brand" href="#">
+            <img
+              src={logo}
+              width="50"
+              className="d-inline-block align-center"
+              alt=""
+            />
+            People Vocabularies
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon" />
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
+              <li className="nav-item active">
+                <Link to="/">
+                  <a className="nav-link" href="#">
+                    Trainer <span className="sr-only">(current)</span>
+                  </a>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/uploader">
+                  <a className="nav-link" href="#">
+                    Uploader
+                  </a>
+                </Link>
+              </li>
+            </ul>
+            <form class="form-inline">
+              <label className="mr-2">Hello, {user && user.username}</label>
+              <button
+                class="btn btn-outline-warning"
+                type="button"
+                onClick={() => setLoggedIn(false)}
+              >
+                Logout
+              </button>
+            </form>
+          </div>
+        </nav>
+      </header>
+
       <section className="container m-2">
         <div className="row">
           <Router>
@@ -150,6 +153,12 @@ function App() {
           </Router>
         </div>
       </section>
+
+      <footer className="bg-light fixed-bottom">
+        <div className="container m-2 text-center">
+          Copyright &copy; peoplevocabularies.com
+        </div>
+      </footer>
     </>
   );
 }
