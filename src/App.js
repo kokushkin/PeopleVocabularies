@@ -154,8 +154,8 @@ function App() {
         </div>
       </section>
 
-      <footer className="bg-light fixed-bottom">
-        <div className="container m-2 text-center">
+      <footer className="bg-light fixed-bottom py-4">
+        <div className="container text-center">
           Copyright &copy; peoplevocabularies.com
         </div>
       </footer>
