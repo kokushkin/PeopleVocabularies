@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { Auth, API, graphqlOperation } from "aws-amplify";
+import { withAuthenticator } from "aws-amplify-react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -137,4 +138,4 @@ const Trainer = () => {
   );
 };
 
-export default Trainer;
+export default withAuthenticator(Trainer);

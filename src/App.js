@@ -2,7 +2,6 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import "./App.css";
 
 import Amplify from "aws-amplify";
-import { withAuthenticator } from "aws-amplify-react";
 import config from "./config";
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import $ from "jquery";
@@ -11,6 +10,7 @@ import { Router } from "@reach/router";
 
 import Trainer from "./components/Trainer";
 import Uploader from "./components/Uploader";
+import Landing from "./components/Landing";
 import { Link } from "@reach/router";
 import logo from "./assets/voclogo.png";
 
@@ -119,7 +119,14 @@ function App() {
               <li className="nav-item active">
                 <Link to="/">
                   <a className="nav-link" href="#">
-                    Trainer <span className="sr-only">(current)</span>
+                    Home <span className="sr-only">(current)</span>
+                  </a>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/trainer">
+                  <a className="nav-link" href="#">
+                    Trainer
                   </a>
                 </Link>
               </li>
@@ -148,7 +155,8 @@ function App() {
       <section className="container m-2">
         <div className="row">
           <Router>
-            <Trainer path="/" />
+            <Landing path="/" />
+            <Trainer path="/trainer" />
             <Uploader path="/uploader" />
           </Router>
         </div>
@@ -163,4 +171,4 @@ function App() {
   );
 }
 
-export default withAuthenticator(App);
+export default App;
