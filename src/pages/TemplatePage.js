@@ -137,7 +137,7 @@ function TemplatePage(props) {
                 </Link>
               </li>
             </ul>
-            {user &&
+            {user && loggedIn &&
               <form class="form-inline">
               <label className="mr-2">Hello, {user && user.username}</label>
               <button
