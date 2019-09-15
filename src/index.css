@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 } */
+
+
+.jumbotron{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+}
+
+.jumbotron-pic1{
+  background-image: url(assets/trainer.png);
+}
+
+.jumbotron-pic2{
+  background-image: url(assets/uploader.png);
+}

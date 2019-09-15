@@ -138,10 +138,10 @@ function TemplatePage(props) {
               </li>
             </ul>
             {user && loggedIn &&
-              <form class="form-inline">
+              <form className="form-inline">
               <label className="mr-2">Hello, {user && user.username}</label>
               <button
-                class="btn btn-outline-warning"
+                className="btn btn-outline-warning"
                 type="button"
                 onClick={() => setLoggedIn(false)}
               >
