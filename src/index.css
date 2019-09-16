@@ -19,10 +19,14 @@ code {
   background-position: center top;
 }
 
-.jumbotron-pic1{
+.jumbotron-trainer{
   background-image: url(assets/trainer.png);
 }
 
-.jumbotron-pic2{
+.jumbotron-uploader{
   background-image: url(assets/uploader.png);
+}
+
+.jumbotron-corrector-translater{
+  background-image: url(assets/corrector-translater.png);
 }
