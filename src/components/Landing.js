@@ -49,13 +49,13 @@ const Landing = () => {
         <section className="container mt-5">
           <div className="jumbotron jumbotron-fluid jumbotron-corrector-translater p-3">
               <h1 className="display-4">Translate and correct your vocabulary!</h1>
-              <p className="lead text-secondary">Upload text what you are going to read and learn new words with a special algorithm to prepare yourself before reading.</p>
+              <p className="lead text-secondary">Translate words and kick of these what you have forgotten.</p>
               <hr className="my-4"/>
               <p>
-              .
+              As you're going through the process of learning something you are forgetting as well. So that's why we give you a way how to correct your vocabulary when you translate. You can use it as a regular translator and kick off words from vocabulary if you understand you don't know them.
               </p>
               <Link to="/trainer">
-                <a className="btn btn-success btn-lg" href="" role="button">Analize text</a>
+                <a className="btn btn-success btn-lg" href="" role="button">Translate and correct</a>
               </Link>
           </div>
         </section>
