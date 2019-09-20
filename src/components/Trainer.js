@@ -79,16 +79,18 @@ const Trainer = () => {
                   rows="15"
                 />
               </div>
-              <button
-                type="submit"
-                onClick={event => {
-                  event.preventDefault();
-                  setAnalize(true);
-                }}
-                className="btn btn-success mb-3"
-              >
-                Analise ...
-              </button>
+              <div class="d-flex justify-content-end">
+                <button
+                  type="submit"
+                  onClick={event => {
+                    event.preventDefault();
+                    setAnalize(true);
+                  }}
+                  className="btn btn-success mb-3"
+                >
+                  Analise ...
+                </button>
+              </div>
             </form>
           </div>
         </div>

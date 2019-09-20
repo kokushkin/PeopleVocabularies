@@ -67,16 +67,18 @@ const Uploader = () => {
                   rows="15"
                 />
               </div>
-              <button
-                type="submit"
-                onClick={event => {
-                  event.preventDefault();
-                  setUpload(true);
-                }}
-                className="btn btn-success mb-3"
-              >
-                Upload ...
-              </button>
+              <div class="d-flex justify-content-end">
+                <button
+                  type="submit"
+                  onClick={event => {
+                    event.preventDefault();
+                    setUpload(true);
+                  }}
+                  className="btn btn-success mb-3"
+                >
+                  Upload ...
+                </button>
+              </div>
             </form>
           </div>
         </div>

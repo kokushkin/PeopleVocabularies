@@ -29,4 +29,5 @@ code {
 
 .jumbotron-corrector-translater{
   background-image: url(assets/corrector-translater.png);
+  margin-bottom: 100px !important;
 }

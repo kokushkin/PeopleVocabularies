@@ -29,7 +29,9 @@ const Landing = () => {
               Upload text what you are going to read and analyze it against your vocabulary. Then learn new words with a special algorithm what let you pass through a list of words several times and learn words easily than ever. After that you can read your text freely without interrupting  that lead to better understanding.
               </p>
               <Link to="/trainer">
-                <a className="btn btn-success btn-lg" href="" role="button">Analize text</a>
+                <div class="d-flex justify-content-end">
+                  <a className="btn btn-success btn-lg float-right" href="" role="button">Analize text</a>
+                </div>
               </Link>
           </div>
         </section>
@@ -42,7 +44,9 @@ const Landing = () => {
               You can create your vocabulary quickly just adding texts what you are sure to be simple for you to read. It considerably reliefs your efforts in the first time. Although you can do it later whenever you want.
               </p>
               <Link to="/uploader">
-                <a className="btn btn-success btn-lg" href="" role="button">Build up vocabulary!</a>
+                <div class="d-flex justify-content-end">
+                  <a className="btn btn-success btn-lg" href="" role="button">Build up vocabulary!</a>
+                </div>
               </Link>
           </div>
         </section>
@@ -55,7 +59,9 @@ const Landing = () => {
               As you're going through the process of learning something you are forgetting as well. So that's why we give you a way how to correct your vocabulary when you translate. You can use it as a regular translator and kick off words from vocabulary if you understand you don't know them.
               </p>
               <Link to="/trainer">
-                <a className="btn btn-success btn-lg" href="" role="button">Translate and correct</a>
+                <div class="d-flex justify-content-end">
+                  <a className="btn btn-success btn-lg" href="" role="button">Translate and correct</a>
+                </div>
               </Link>
           </div>
         </section>
