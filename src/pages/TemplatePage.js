@@ -162,7 +162,7 @@ function TemplatePage(props) {
         </div>
       </section>
 
-      <footer className="bg-light fixed-bottom py-4">
+      <footer className="footer bg-light fixed-bottom py-4">
         <div className="container text-center">
           Copyright &copy; peoplevocabularies.com
         </div>

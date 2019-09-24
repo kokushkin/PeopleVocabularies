@@ -12,6 +12,13 @@ code {
     monospace;
 } */
 
+.navbar{
+  background-color: #e2e5e8!important;
+}
+
+.footer{
+  background-color: #e2e5e8!important;
+}
 
 .jumbotron{
   background-repeat: no-repeat;

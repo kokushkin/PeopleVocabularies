@@ -14,6 +14,7 @@ import Landing from "./components/Landing";
 import { Link } from "@reach/router";
 import logo from "./assets/voclogo.png";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
 import  { LandingPage, TrainerPage,  UploaderPage} from "./pages/Pages";
 
