@@ -4,11 +4,11 @@ import { withAuthenticator } from "aws-amplify-react";
 
 import 'bootstrap';
 
-var GetUnknownWordsByText = `query getUnknownWordsByText($text: String!){
+var GET_UNKNOWN_WORDS_BY_TEXT = `query getUnknownWordsByText($text: String!){
   getUnknownWordsByText(text: $text)
 }`;
 
-var AddWordToVocabluary = `mutation AddWordToVocabluary($word: String!){
+var ADD_WORD_TO_VOCABULARY = `mutation AddWordToVocabluary($word: String!){
   addWordToVocabulary(word: $word) {
     code
     message
@@ -16,53 +16,47 @@ var AddWordToVocabluary = `mutation AddWordToVocabluary($word: String!){
 }`;
 
 const Trainer = () => {
-  const [newWords, setNewWords] = useState(undefined);
-  const [analize, setAnalize] = useState(undefined);
-  const [addingWord, setAddingWord] = useState(undefined);
-  const textForAnalis = useRef(null);
-
+  const [wordsFromText, setWordsFromText] = useState([]);
+  
+  //analize text
+  const textElement = useRef(null);
+  const [textForAnalyze, setTextForAnalyze] = useState("");
   useEffect(() => {
     const getUnknownWordsByText = async () => {
-      if (analize === true) {
         try {
           let result = await API.graphql(
-            graphqlOperation(GetUnknownWordsByText, {
-              text: textForAnalis.current.value
+            graphqlOperation(GET_UNKNOWN_WORDS_BY_TEXT, {
+              text: textForAnalyze
             })
           );
-          setNewWords(result.data.getUnknownWordsByText);
+          setWordsFromText(result.data.getUnknownWordsByText);
           console.log("We get new words from Analize");
         } catch (ex) {
           console.log(ex);
         }
-      }
     };
     getUnknownWordsByText();
-    return () => {
-      setAnalize(false);
-    };
-  }, [analize]);
+  }, [textForAnalyze]);
 
+
+  // add word to vicabulary
+  const [wordToVocabulary, setWordToVocabulary] = useState(undefined);
   useEffect(() => {
     const addWordToVocabluary = async () => {
-      if (addingWord !== undefined) {
         try {
           let result = await API.graphql(
-            graphqlOperation(AddWordToVocabluary, {
-              word: addingWord
+            graphqlOperation(ADD_WORD_TO_VOCABULARY, {
+              word: wordToVocabulary
             })
           );
           console.log("We added new word");
         } catch (ex) {
           console.log(ex);
         }
-      }
+        setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wordToVocabulary));
     };
     addWordToVocabluary();
-    return () => {
-      setAddingWord(undefined);
-    };
-  }, [addingWord]);
+  }, [wordToVocabulary]);
 
   return (
     <section className="container">
@@ -73,7 +67,7 @@ const Trainer = () => {
             <form>
               <div className="form-group">
                 <textarea
-                  ref={textForAnalis}
+                  ref={textElement}
                   className="form-control"
                   id="text"
                   rows="15"
@@ -84,7 +78,7 @@ const Trainer = () => {
                   type="submit"
                   onClick={event => {
                     event.preventDefault();
-                    setAnalize(true);
+                    setTextForAnalyze(textElement.current.value);
                   }}
                   className="btn btn-success mb-3"
                 >
@@ -96,8 +90,8 @@ const Trainer = () => {
         </div>
         <div className="col-md-4 col-sm-12">
           <ul className="list-group">
-            {newWords &&
-              newWords.map(wrd => (
+            {wordsFromText &&
+              wordsFromText.map(wrd => (
                 <li className="list-group-item" key={wrd}>
                   <div className="container-fluid">
                     <div className="float-left mt-3">
@@ -106,8 +100,7 @@ const Trainer = () => {
                     <button
                       className="btn  float-right"
                       onClick={() => {
-                        setAddingWord(wrd);
-                        setNewWords(newWords.filter(curWrd => curWrd !== wrd));
+                        setWordToVocabulary(wrd);                        
                       }}
                     >
                       <i className="fa fa-2x fa-glass text-success" />
@@ -115,7 +108,7 @@ const Trainer = () => {
                     <button
                       className="btn  float-right"
                       onClick={() =>
-                        setNewWords(newWords.filter(curWrd => curWrd !== wrd))
+                        setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wrd))
                       }
                     >
                       <i className="fa fa-2x fa-check text-warning" />
