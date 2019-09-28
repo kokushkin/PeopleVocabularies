@@ -4,53 +4,44 @@ import { withAuthenticator } from "aws-amplify-react";
 
 import 'bootstrap';
 
-var GetVocabularyQuery = `query {
+var GET_VOCABULARY = `query {
   getVocabulary {
     user
     words
   }
 }`;
 
-var UploadWellKnownText = `mutation uploadWellKnownText($text: String!){
+var UPLOAD_WELL_KNOWN_TEXT = `mutation uploadWellKnownText($text: String!){
 	uploadWellKnownText(text: $text) {
     code
     message
   }
 }`;
 
+// upload text and get renewed vocabulary
 const Uploader = () => {
+  const uploadTextElement = useRef(null);
+  const [textForUplodaing, setTextForUplodaing] = useState("");
   const [vocabulary, setVocabulary] = useState(undefined);
-  const [upload, setUpload] = useState(undefined);
-  const textForUploading = useRef(null);
-
-  //load user Vocabulary
-  useEffect(() => {
-    const loadUserVocabulary = async () => {
-      if (upload === undefined || upload === false) {
-        let result = await API.graphql(graphqlOperation(GetVocabularyQuery));
-        setVocabulary(result.data.getVocabulary);
-      }
-    };
-    loadUserVocabulary();
-  }, [upload]);
-
   useEffect(() => {
     const uploadWellKnownText = async () => {
-      if (upload === true) {
         try {
           let result = await API.graphql(
-            graphqlOperation(UploadWellKnownText, {
-              text: textForUploading.current.value
+            graphqlOperation(UPLOAD_WELL_KNOWN_TEXT, {
+              text: uploadTextElement.current.value
             })
           );
           console.log("We uploaded text!!!");
         } catch (ex) {
           console.log(ex);
-        }
-      }
+        }      
     };
-    uploadWellKnownText().then(() => setUpload(false));
-  }, [upload]);
+    const loadUserVocabulary = async () => {
+        let result = await API.graphql(graphqlOperation(GET_VOCABULARY));
+        setVocabulary(result.data.getVocabulary);      
+    };
+    uploadWellKnownText().then(loadUserVocabulary);
+  }, [textForUplodaing, uploadTextElement]);
 
   return (
     <section className="container">
@@ -61,7 +52,7 @@ const Uploader = () => {
             <form>
               <div className="form-group">
                 <textarea
-                  ref={textForUploading}
+                  ref={uploadTextElement}
                   className="form-control"
                   id="text"
                   rows="15"
@@ -72,11 +63,11 @@ const Uploader = () => {
                   type="submit"
                   onClick={event => {
                     event.preventDefault();
-                    setUpload(true);
+                    setTextForUplodaing(uploadTextElement.current.value)
                   }}
                   className="btn btn-success mb-3"
                 >
-                  Upload ...
+                  Upload
                 </button>
               </div>
             </form>

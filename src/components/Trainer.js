@@ -82,7 +82,7 @@ const Trainer = () => {
                   }}
                   className="btn btn-success mb-3"
                 >
-                  Analise ...
+                  Analise
                 </button>
               </div>
             </form>
@@ -115,15 +115,6 @@ const Trainer = () => {
                     </button>
                   </div>
                 </li>
-                // <li
-                //   className="list-group-item"
-                //   key={event.id}
-                //   data-toggle="modal"
-                //   data-target="#myModal"
-                //   onClick={() => setCurrentDescriptionId(event.id)}
-                // >
-                //   {event.title} - {friendlyDateTime(event.dateStart)}
-                // </li>
               ))}
           </ul>
         </div>
