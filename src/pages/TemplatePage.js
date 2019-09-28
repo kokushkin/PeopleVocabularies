@@ -2,7 +2,7 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 
 import Amplify from "aws-amplify";
 import config from "../config";
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import $ from "jquery";
 
 import { Router } from "@reach/router";
@@ -11,6 +11,7 @@ import { Link } from "@reach/router";
 import logo from "../assets/voclogo.png";
 import { propStyle } from "aws-amplify-react/dist/AmplifyUI";
 import { withAuthenticator } from "aws-amplify-react";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
 Amplify.configure(config.amplify);
@@ -29,37 +30,8 @@ var CREATE_VOCABULARY = `mutation {
   }
 }`;
 
-
-
 function TemplatePage(props) {
-
-  //get user info
-  let [askedToLogOut, setAskedToLogOut] = useState(false);
-  useEffect(() => {
-    if (askedToLogOut) {
-      const logOutUser = async () => {
-        await Auth.signOut();
-        setAskedToLogOut(false);
-      };
-      logOutUser();
-    }
-  }, [askedToLogOut]);
-
-  let [user, setUser] = useState(undefined);
-  useEffect(() => {
-    let didCancel = false;
-    const fetchUser = async () => {
-      const user = await Auth.currentUserInfo();
-      if(!didCancel) {
-        setUser(user);
-      }
-      
-    };
-    fetchUser();
-    return () => {didCancel = true;};
-  }, [askedToLogOut]);
-
-
+  let {user, logOut} = useLoggedInUser();
 
   //load user Vocabulary
   let [vocabulary, setVocabulary] = useState(undefined);
@@ -146,11 +118,11 @@ function TemplatePage(props) {
             </ul>
             {user &&
               <form className="form-inline">
-              <label className="mr-2">Hello, {user && user.username}</label>
+              <label className="mr-2">Hello, {user.username}</label>
               <button
                 className="btn btn-outline-warning"
                 type="button"
-                onClick={() => setAskedToLogOut(true)}
+                onClick={logOut}
               >
                 Logout
               </button>
