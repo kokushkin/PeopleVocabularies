@@ -5,19 +5,7 @@ import { Link } from "@reach/router";
 
 import 'bootstrap';
 
-var GetUnknownWordsByText = `query getUnknownWordsByText($text: String!){
-  getUnknownWordsByText(text: $text)
-}`;
-
-var AddWordToVocabluary = `mutation AddWordToVocabluary($word: String!){
-  addWordToVocabulary(word: $word) {
-    code
-    message
-  }
-}`;
-
 const Landing = () => {
-
   return (
     <div>
         <section className="container mt-5">

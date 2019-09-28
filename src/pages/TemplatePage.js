@@ -15,51 +15,58 @@ import { withAuthenticator } from "aws-amplify-react";
 
 Amplify.configure(config.amplify);
 
-var GetVocabularyQuery = `query {
+var GET_VOCABULARY = `query {
            getVocabulary {
              user
              words             
            }
          }`;
 
-var CreateVocabularyMutation = `mutation {
+var CREATE_VOCABULARY = `mutation {
   createVocabulary {
     code
     message
   }
 }`;
 
+
+
 function TemplatePage(props) {
-  let [user, setUser] = useState(undefined);
-  let [loggedIn, setLoggedIn] = useState(undefined);
-  let [vocabulary, setVocabulary] = useState(undefined);
-  let [vocabularyExist, setVocabularyExist] = useState(undefined);
 
   //get user info
+  let [askedToLogOut, setAskedToLogOut] = useState(false);
   useEffect(() => {
-    const fetchUser = async () => {
-      const user = await Auth.currentUserInfo();
-      setUser(user);
-      setLoggedIn(true);
-    };
-    fetchUser();
-  }, []);
-
-  //logout user
-  useEffect(() => {
-    if (loggedIn === false) {
+    if (askedToLogOut) {
       const logOutUser = async () => {
         await Auth.signOut();
-        setLoggedIn(false);
+        setAskedToLogOut(false);
       };
       logOutUser();
     }
-  }, [loggedIn]);
+  }, [askedToLogOut]);
+
+  let [user, setUser] = useState(undefined);
+  useEffect(() => {
+    let didCancel = false;
+    const fetchUser = async () => {
+      const user = await Auth.currentUserInfo();
+      if(!didCancel) {
+        setUser(user);
+      }
+      
+    };
+    fetchUser();
+    return () => {didCancel = true;};
+  }, [askedToLogOut]);
+
+
 
   //load user Vocabulary
+  let [vocabulary, setVocabulary] = useState(undefined);
+  let [vocabularyExist, setVocabularyExist] = useState(undefined);
   useEffect(() => {
     const loadUserVocabulary = async () => {
-      let result = await API.graphql(graphqlOperation(GetVocabularyQuery));
+      let result = await API.graphql(graphqlOperation(GET_VOCABULARY));
       if (result.data.getVocabulary === null) {
         console.log("The vocabulary doen't exist yet");
         setVocabularyExist(false);
@@ -77,7 +84,7 @@ function TemplatePage(props) {
     const createUserVocabulary = async () => {
       if (vocabularyExist === false) {
         let result = await API.graphql(
-          graphqlOperation(CreateVocabularyMutation)
+          graphqlOperation(CREATE_VOCABULARY)
         );
         setVocabulary(result.data.createVocabulary);
         console.log("The vocabulary was created");
@@ -137,13 +144,13 @@ function TemplatePage(props) {
                 </Link>
               </li>
             </ul>
-            {user && loggedIn &&
+            {user &&
               <form className="form-inline">
               <label className="mr-2">Hello, {user && user.username}</label>
               <button
                 className="btn btn-outline-warning"
                 type="button"
-                onClick={() => setLoggedIn(false)}
+                onClick={() => setAskedToLogOut(true)}
               >
                 Logout
               </button>
