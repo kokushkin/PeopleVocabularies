@@ -16,57 +16,8 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 Amplify.configure(config.amplify);
 
-var GET_VOCABULARY = `query {
-           getVocabulary {
-             user
-             words             
-           }
-         }`;
-
-var CREATE_VOCABULARY = `mutation {
-  createVocabulary {
-    code
-    message
-  }
-}`;
-
 function TemplatePage(props) {
   let {user, logOut} = useLoggedInUser();
-
-  //load user Vocabulary
-  let [vocabulary, setVocabulary] = useState(undefined);
-  let [vocabularyExist, setVocabularyExist] = useState(undefined);
-  useEffect(() => {
-    const loadUserVocabulary = async () => {
-      let result = await API.graphql(graphqlOperation(GET_VOCABULARY));
-      if (result.data.getVocabulary === null) {
-        console.log("The vocabulary doen't exist yet");
-        setVocabularyExist(false);
-      } else if (result.data.getVocabulary !== null) {
-        console.log("You already have your vocabulary");
-        setVocabularyExist(true);
-      }
-      setVocabulary(result.data.getVocabulary);
-    };
-    loadUserVocabulary();
-  }, []);
-
-  //create user Vocabulary if it dosn't exist
-  useEffect(() => {
-    const createUserVocabulary = async () => {
-      if (vocabularyExist === false) {
-        let result = await API.graphql(
-          graphqlOperation(CREATE_VOCABULARY)
-        );
-        setVocabulary(result.data.createVocabulary);
-        console.log("The vocabulary was created");
-      }
-    };
-    createUserVocabulary();
-    return () => {
-      setVocabularyExist(true);
-    };
-  }, [vocabulary, vocabularyExist]);
 
   return (
     <>
