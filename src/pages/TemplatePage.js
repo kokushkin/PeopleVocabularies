@@ -9,16 +9,13 @@ import { Router } from "@reach/router";
 
 import { Link } from "@reach/router";
 import logo from "../assets/voclogo.png";
-import { propStyle } from "aws-amplify-react/dist/AmplifyUI";
 import { withAuthenticator } from "aws-amplify-react";
-import { useLoggedInUser } from "../hooks/useLoggedInUser";
+import { LogOut } from "../components/LogOut";
 
 
 Amplify.configure(config.amplify);
 
 function TemplatePage(props) {
-  let {user, logOut} = useLoggedInUser();
-
   return (
     <>
       <header>
@@ -67,19 +64,7 @@ function TemplatePage(props) {
                 </Link>
               </li>
             </ul>
-            {user &&
-              <form className="form-inline">
-              <label className="mr-2">Hello, {user.username}</label>
-              <button
-                className="btn btn-outline-warning"
-                type="button"
-                onClick={logOut}
-              >
-                Logout
-              </button>
-            </form>            
-            }
-            
+            <LogOut />        
           </div>
         </nav>
       </header>
