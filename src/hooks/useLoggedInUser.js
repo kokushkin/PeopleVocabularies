@@ -5,6 +5,7 @@ export function useLoggedInUser() {
   let [askedToLogOut, setAskedToLogOut] = useState(false);
   useEffect(() => {
     if (askedToLogOut) {
+      Auth.authCallbacks()
       const logOutUser = async () => {
         await Auth.signOut();
         setAskedToLogOut(false);

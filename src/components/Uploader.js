@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, FunctionComponent } from "react";
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import { withAuthenticator } from "aws-amplify-react";
+import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 
 import 'bootstrap';
 
@@ -93,4 +94,4 @@ const Uploader = () => {
   );
 };
 
-export default withAuthenticator(Uploader);
+export default withAugmentedAuthenticator(Uploader);

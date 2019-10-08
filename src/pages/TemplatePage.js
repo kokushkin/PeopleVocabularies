@@ -12,10 +12,15 @@ import logo from "../assets/voclogo.png";
 import { withAuthenticator } from "aws-amplify-react";
 import { LogOut } from "../components/LogOut";
 
+import Trainer from "../components/Trainer";
+import Uploader from "../components/Uploader";
+import Landing from "../components/Landing";
+
 
 Amplify.configure(config.amplify);
 
 function TemplatePage(props) {
+  const [user, setUser] = useState(undefined);
   return (
     <>
       <header>
@@ -64,7 +69,7 @@ function TemplatePage(props) {
                 </Link>
               </li>
             </ul>
-            <LogOut />        
+            {user && <LogOut /> }                   
           </div>
         </nav>
       </header>
@@ -72,7 +77,11 @@ function TemplatePage(props) {
       <section className="container">
         <div className="row">
           <div className="col-12">
-            {props.children}
+            <Router>
+              <Landing path="/"/>
+              <Trainer onUser={(user) => setUser(user)}  path="/trainer"/>
+              <Uploader onUser={(user) => setUser(user)}  path="/uploader"/>
+            </Router>
           </div>       
         </div>
       </section>
@@ -86,8 +95,7 @@ function TemplatePage(props) {
   );
 }
 
-const TemplatePageWithAuth = withAuthenticator(TemplatePage);
 
-export { TemplatePage, TemplatePageWithAuth };
+export { TemplatePage };
 
 
