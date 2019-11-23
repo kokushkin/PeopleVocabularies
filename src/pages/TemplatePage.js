@@ -15,12 +15,15 @@ import { LogOut } from "../components/LogOut";
 import Trainer from "../components/Trainer";
 import Uploader from "../components/Uploader";
 import Landing from "../components/Landing";
+import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
 Amplify.configure(config.amplify);
 
 function TemplatePage(props) {
-  const [user, setUser] = useState(undefined);
+
+  let {user, logOut, getUser} = useLoggedInUser();
+
   return (
     <>
       <header>
@@ -69,7 +72,7 @@ function TemplatePage(props) {
                 </Link>
               </li>
             </ul>
-            {user && <LogOut /> }                   
+            {user && <LogOut onLogout={() => logOut()} user={user}/>}                    
           </div>
         </nav>
       </header>
@@ -79,8 +82,8 @@ function TemplatePage(props) {
           <div className="col-12">
             <Router>
               <Landing path="/"/>
-              <Trainer onUser={(user) => setUser(user)}  path="/trainer"/>
-              <Uploader onUser={(user) => setUser(user)}  path="/uploader"/>
+              <Trainer path="/trainer" onLogin={()=>getUser()}/>
+              <Uploader path="/uploader" onLogin={()=>getUser()}/>
             </Router>
           </div>       
         </div>

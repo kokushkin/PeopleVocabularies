@@ -3,6 +3,7 @@ import { Auth } from "aws-amplify";
 export function useLoggedInUser() {
   //get user info
   let [askedToLogOut, setAskedToLogOut] = useState(false);
+  let [askedToGetUser, setAskedToGetUser] = useState(false);
   useEffect(() => {
     if (askedToLogOut) {
       Auth.authCallbacks()
@@ -20,10 +21,11 @@ export function useLoggedInUser() {
       const user = await Auth.currentUserInfo();
       if (!didCancel) {
         setUser(user);
+        setAskedToGetUser(false);
       }
     };
     fetchUser();
     return () => { didCancel = true; };
-  }, [askedToLogOut]);
-  return { user, logOut: () => setAskedToLogOut(true) };
+  }, [askedToLogOut, askedToGetUser]);
+  return { user, logOut: () => setAskedToLogOut(true), getUser: () => setAskedToGetUser(true)};
 }
