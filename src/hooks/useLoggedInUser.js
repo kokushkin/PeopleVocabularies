@@ -4,9 +4,13 @@ export function useLoggedInUser() {
   let [user, setUser] = useState(undefined);
 
   return { user, 
-    
-    logOut: () => Auth.signOut().then(res =>
-    Auth.currentUserInfo().then(user => setUser(user))), 
 
-    getUser: () => Auth.currentUserInfo().then(user => setUser(user))};
-}
+    logOut: async () =>  {
+      await Auth.signOut();
+      setUser(null);      
+    }, 
+
+    getUser: async () => {
+      const user = await Auth.currentUserInfo();
+      setUser(user);
+    }}}
