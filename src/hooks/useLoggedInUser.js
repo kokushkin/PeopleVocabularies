@@ -1,31 +1,12 @@
 import { useState, useEffect } from "react";
 import { Auth } from "aws-amplify";
 export function useLoggedInUser() {
-  //get user info
-  let [askedToLogOut, setAskedToLogOut] = useState(false);
-  let [askedToGetUser, setAskedToGetUser] = useState(false);
-  useEffect(() => {
-    if (askedToLogOut) {
-      Auth.authCallbacks()
-      const logOutUser = async () => {
-        await Auth.signOut();
-        setAskedToLogOut(false);
-      };
-      logOutUser();
-    }
-  }, [askedToLogOut]);
   let [user, setUser] = useState(undefined);
-  useEffect(() => {
-    let didCancel = false;
-    const fetchUser = async () => {
-      const user = await Auth.currentUserInfo();
-      if (!didCancel) {
-        setUser(user);
-        setAskedToGetUser(false);
-      }
-    };
-    fetchUser();
-    return () => { didCancel = true; };
-  }, [askedToLogOut, askedToGetUser]);
-  return { user, logOut: () => setAskedToLogOut(true), getUser: () => setAskedToGetUser(true)};
+
+  return { user, 
+    
+    logOut: () => Auth.signOut().then(res =>
+    Auth.currentUserInfo().then(user => setUser(user))), 
+
+    getUser: () => Auth.currentUserInfo().then(user => setUser(user))};
 }
