@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Auth } from "aws-amplify";
 export function useLoggedInUser() {
   let [user, setUser] = useState(undefined);
 
-  return { user, 
+  const logOut = useCallback(async () => {
+    await Auth.signOut();
+    setUser(null);
+  }, []);
 
-    logOut: async () =>  {
-      await Auth.signOut();
-      setUser(null);      
-    }, 
+  const getUser = useCallback(async () => {
+    const user = await Auth.currentUserInfo();
+    setUser(user);
+  }, []);
 
-    getUser: async () => {
-      const user = await Auth.currentUserInfo();
-      setUser(user);
-    }}}
+  return { user, logOut, getUser}};

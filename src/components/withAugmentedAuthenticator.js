@@ -7,7 +7,7 @@ const withUser = BaseComponent => ({onLogin, ...props}) => {
 
     useEffect(() => {
         onLogin(); 
-    },[])
+    },[onLogin])
 
     return (<BaseComponent {...props}/>);
 };

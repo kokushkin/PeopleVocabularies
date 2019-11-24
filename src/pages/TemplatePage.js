@@ -82,8 +82,8 @@ function TemplatePage(props) {
           <div className="col-12">
             <Router>
               <Landing path="/"/>
-              <Trainer path="/trainer" onLogin={()=>getUser()}/>
-              <Uploader path="/uploader" onLogin={()=>getUser()}/>
+              <Trainer path="/trainer" onLogin={getUser}/>
+              <Uploader path="/uploader" onLogin={getUser}/>
             </Router>
           </div>       
         </div>
