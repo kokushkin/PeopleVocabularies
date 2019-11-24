@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, FunctionComponent } from "react";
+import React, { useState, useEffect, useRef, FunctionComponent, useCallback } from "react";
 import { Auth, API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 
@@ -54,10 +54,10 @@ const Trainer = () => {
         } catch (ex) {
           console.log(ex);
         }
-        setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wordToVocabulary));
+        excludeWordFromList(wordToVocabulary);
     };
     addWordToVocabluary();
-  }, [wordToVocabulary]);
+  }, [wordToVocabulary, excludeWordFromList]);
 
   const [firstPass, setFirstPass] = useState(false);
   const [unknownWords, setUnknownWords] = useState([]);
@@ -69,6 +69,8 @@ const Trainer = () => {
     setUnknownWords([]);      
   }
   
+  const excludeWordFromList = useCallback(word => 
+    setWordsFromText(wordsFromText => wordsFromText.filter(curWrd => curWrd !== word)), []);
 
   return (
     <section className="container">
@@ -116,7 +118,7 @@ const Trainer = () => {
                         if(firstPass)
                           setWordToVocabulary(wrd);
                         else
-                          setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wrd))                      
+                          excludeWordFromList(wrd);                     
                       }}
                     >
                       <i className="fa fa-2x fa-glass text-success" />
@@ -125,7 +127,7 @@ const Trainer = () => {
                     <button
                       className="btn  float-right"
                       onClick={() => {
-                          setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wrd));
+                          excludeWordFromList(wrd);
                           unknownWords.push(wrd);
                           setUnknownWords(unknownWords);
                         }}>
