@@ -47,7 +47,7 @@ const Uploader = () => {
   return (
     <section className="container">
       <div className="row">
-        <div className="col-md-8 col-sm-12">
+        <div className="col-12 col-md-8">
           <div className="container">
             <h3 className="display-4">Build up your vocabulary quickly!</h3>
             <form>
@@ -74,8 +74,8 @@ const Uploader = () => {
             </form>
           </div>
         </div>
-        <div className="overflow-auto col-md-4 col-sm-12">
-          <ul className="list-group">
+        <div className="col-12 col-md-4">
+          <ul className="list-group scroll-list">
             {vocabulary &&
               vocabulary.words &&
               vocabulary.words.map(wrd => (

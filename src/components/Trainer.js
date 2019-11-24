@@ -61,7 +61,7 @@ const Trainer = () => {
   return (
     <section className="container">
       <div className="row">
-        <div className="col-md-8 col-sm-12">
+        <div className="col-12 col-md-8">
           <div className="container">
             <h3 className="display-4">Check text and learn new words!!</h3>
             <form>
@@ -88,8 +88,8 @@ const Trainer = () => {
             </form>
           </div>
         </div>
-        <div className="col-md-4 col-sm-12">
-          <ul className="list-group">
+        <div className="col-12 col-md-4">
+          <ul className="list-group scroll-list">
             {wordsFromText &&
               wordsFromText.map(wrd => (
                 <li className="list-group-item" key={wrd}>
