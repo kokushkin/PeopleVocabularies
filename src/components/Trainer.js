@@ -128,8 +128,7 @@ const Trainer = () => {
                       className="btn  float-right"
                       onClick={() => {
                           excludeWordFromList(wrd);
-                          unknownWords.push(wrd);
-                          setUnknownWords(unknownWords);
+                          setUnknownWords(words => words.concat(wrd));
                         }}>
                       <i className="fa fa-2x fa-check text-warning" />
                     </button>
