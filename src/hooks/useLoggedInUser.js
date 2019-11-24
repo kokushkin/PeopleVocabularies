@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Auth } from "aws-amplify";
 export function useLoggedInUser() {
   let [user, setUser] = useState(undefined);

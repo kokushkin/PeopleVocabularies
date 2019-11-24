@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, FunctionComponent } from "react";
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import React, { useState, useEffect, useRef } from "react";
+import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 
 
@@ -27,7 +27,7 @@ const Uploader = () => {
   useEffect(() => {
     const uploadWellKnownText = async () => {
         try {
-          let result = await API.graphql(
+          await API.graphql(
             graphqlOperation(UPLOAD_WELL_KNOWN_TEXT, {
               text: uploadTextElement.current.value
             })
@@ -38,7 +38,7 @@ const Uploader = () => {
         }      
     };
     const loadUserVocabulary = async () => {
-        let result = await API.graphql(graphqlOperation(GET_VOCABULARY));
+        const result = await API.graphql(graphqlOperation(GET_VOCABULARY));
         setVocabulary(result.data.getVocabulary);      
     };
     uploadWellKnownText().then(loadUserVocabulary);

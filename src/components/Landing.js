@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef, FunctionComponent } from "react";
-import { Auth, API, graphqlOperation } from "aws-amplify";
-import { withAuthenticator } from "aws-amplify-react";
+import React from "react";
 import { Link } from "@reach/router";
 
 import 'bootstrap';

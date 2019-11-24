@@ -1,15 +1,12 @@
-import React, { useState, useEffect, FunctionComponent } from "react";
+import React from "react";
 
 import Amplify from "aws-amplify";
 import config from "../config";
-import { API, graphqlOperation } from "aws-amplify";
-import $ from "jquery";
 
 import { Router } from "@reach/router";
 
 import { Link } from "@reach/router";
 import logo from "../assets/voclogo.png";
-import { withAuthenticator } from "aws-amplify-react";
 import { LogOut } from "../components/LogOut";
 
 import Trainer from "../components/Trainer";
@@ -20,7 +17,7 @@ import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 Amplify.configure(config.amplify);
 
-function TemplatePage(props) {
+function TemplatePage() {
 
   let {user, logOut, getUser} = useLoggedInUser();
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, FunctionComponent, useCallback } from "react";
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 
 import 'bootstrap';
@@ -24,7 +24,7 @@ const Trainer = () => {
   useEffect(() => {
     const getUnknownWordsByText = async () => {
         try {
-          let result = await API.graphql(
+          const result = await API.graphql(
             graphqlOperation(GET_UNKNOWN_WORDS_BY_TEXT, {
               text: textForAnalyze
             })
@@ -39,13 +39,15 @@ const Trainer = () => {
     getUnknownWordsByText();
   }, [textForAnalyze]);
 
+  const excludeWordFromList = useCallback(word => 
+    setWordsFromText(wordsFromText => wordsFromText.filter(curWrd => curWrd !== word)), []);
 
   // add word to vicabulary
   const [wordToVocabulary, setWordToVocabulary] = useState(undefined);
   useEffect(() => {
     const addWordToVocabluary = async () => {
         try {
-          let result = await API.graphql(
+          await API.graphql(
             graphqlOperation(ADD_WORD_TO_VOCABULARY, {
               word: wordToVocabulary
             })
@@ -61,7 +63,7 @@ const Trainer = () => {
 
   const [firstPass, setFirstPass] = useState(false);
   const [unknownWords, setUnknownWords] = useState([]);
-  if(wordsFromText.length == 0 && unknownWords.length > 0) {
+  if(wordsFromText.length === 0 && unknownWords.length > 0) {
     if(firstPass) {
       setFirstPass(false);
     }
@@ -69,8 +71,7 @@ const Trainer = () => {
     setUnknownWords([]);      
   }
   
-  const excludeWordFromList = useCallback(word => 
-    setWordsFromText(wordsFromText => wordsFromText.filter(curWrd => curWrd !== word)), []);
+
 
   return (
     <section className="container">

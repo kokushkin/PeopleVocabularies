@@ -1,5 +1,4 @@
 import React from "react";
-import { useLoggedInUser } from "../hooks/useLoggedInUser";
 import { withAuthenticator } from "aws-amplify-react";
 import { useEffect } from "react";
 
