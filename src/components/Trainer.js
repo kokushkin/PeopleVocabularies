@@ -30,6 +30,7 @@ const Trainer = () => {
             })
           );
           setWordsFromText(result.data.getUnknownWordsByText);
+          setFirstPass(true);
           console.log("We get new words from Analize");
         } catch (ex) {
           console.log(ex);
@@ -57,6 +58,17 @@ const Trainer = () => {
     };
     addWordToVocabluary();
   }, [wordToVocabulary]);
+
+  const [firstPass, setFirstPass] = useState(false);
+  const [unknownWords, setUnknownWords] = useState([]);
+  if(wordsFromText.length == 0 && unknownWords.length > 0) {
+    if(firstPass) {
+      setFirstPass(false);
+    }
+    setWordsFromText(unknownWords);
+    setUnknownWords([]);      
+  }
+  
 
   return (
     <section className="container">
@@ -97,20 +109,26 @@ const Trainer = () => {
                     <div className="float-left mt-3">
                       <span>{wrd}</span>
                     </div>
+                    {/* KNOWN word button */}
                     <button
                       className="btn  float-right"
                       onClick={() => {
-                        setWordToVocabulary(wrd);                        
+                        if(firstPass)
+                          setWordToVocabulary(wrd);
+                        else
+                          setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wrd))                      
                       }}
                     >
                       <i className="fa fa-2x fa-glass text-success" />
                     </button>
+                    {/* UNKNOWN word button */}
                     <button
                       className="btn  float-right"
-                      onClick={() =>
-                        setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wrd))
-                      }
-                    >
+                      onClick={() => {
+                          setWordsFromText(wordsFromText.filter(curWrd => curWrd !== wrd));
+                          unknownWords.push(wrd);
+                          setUnknownWords(unknownWords);
+                        }}>
                       <i className="fa fa-2x fa-check text-warning" />
                     </button>
                   </div>
