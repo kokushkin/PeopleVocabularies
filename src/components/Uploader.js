@@ -4,26 +4,33 @@ import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator
 
 
 import 'bootstrap';
+import { async } from "q";
 
-var GET_VOCABULARY = `query {
+const GET_VOCABULARY = `query {
   getVocabulary {
     user
     words
   }
 }`;
 
-var UPLOAD_WELL_KNOWN_TEXT = `mutation uploadWellKnownText($text: String!){
+const UPLOAD_WELL_KNOWN_TEXT = `mutation uploadWellKnownText($text: String!){
 	uploadWellKnownText(text: $text) {
     code
     message
   }
 }`;
 
+const DELETE_WORD_FROM_VOCABULARY = `mutation deleteWordFromVocabulary($word: String!){
+  deleteWordFromVocabulary(word: $word) {
+    user
+  }
+}`
+
 // upload text and get renewed vocabulary
 const Uploader = () => {
   const uploadTextElement = useRef(null);
   const [textForUplodaing, setTextForUplodaing] = useState("");
-  const [vocabulary, setVocabulary] = useState(undefined);
+  const [vocabulary, setVocabulary] = useState([]);
   useEffect(() => {
     const uploadWellKnownText = async () => {
         try {
@@ -39,10 +46,29 @@ const Uploader = () => {
     };
     const loadUserVocabulary = async () => {
         const result = await API.graphql(graphqlOperation(GET_VOCABULARY));
-        setVocabulary(result.data.getVocabulary);      
+        setVocabulary(result.data.getVocabulary.words);      
     };
     uploadWellKnownText().then(loadUserVocabulary);
   }, [textForUplodaing, uploadTextElement]);
+
+  // delete unknown word from vocabulary
+  const [wordToDelete, setWordToDelete] = useState();
+  useEffect(() => {
+    if(!wordToDelete)
+      return;
+    const deleteWordFromVocabulary = async () => {
+      try {
+        await API.graphql(graphqlOperation(DELETE_WORD_FROM_VOCABULARY, {
+          word: wordToDelete
+        }));
+        setVocabulary(vocabulary => vocabulary.filter(word => word !== wordToDelete));
+        console.log("Word was deleted!!!");
+      } catch (ex) {
+        console.log(ex);
+      }
+    };
+    deleteWordFromVocabulary();
+  }, [wordToDelete]);
 
   return (
     <section className="container">
@@ -77,13 +103,17 @@ const Uploader = () => {
         <div className="col-12 col-md-4">
           <ul className="list-group scroll-list">
             {vocabulary &&
-              vocabulary.words &&
-              vocabulary.words.map(wrd => (
+              vocabulary.map(wrd => (
                 <li className="list-group-item" key={wrd}>
                   <div className="container-fluid">
                     <div className="float-left mt-3">
                       <span>{wrd}</span>
                     </div>
+                    <button className="btn float-right" onClick={() => {
+                      setWordToDelete(wrd);
+                    }}>
+                      <i className="fa fa-2x fa-times text-danger" />
+                    </button>
                   </div>
                 </li>
               ))}
