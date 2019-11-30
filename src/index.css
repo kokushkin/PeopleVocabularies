@@ -39,11 +39,17 @@ code {
   margin-bottom: 100px !important;
 }
 
+
+
 @media screen and (min-width: 767.98px) {
+
+  .scroll-block {
+    margin-top: 35px;
+  }
+
   .scroll-list {
     max-height: 700px;
     overflow-y: scroll;
-    margin-top: 35px;
     border-top: 1px solid rgba(0,0,0,.125);
     border-bottom: 1px solid rgba(0,0,0,.125);
   }

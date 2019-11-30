@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 
@@ -70,6 +70,15 @@ const Uploader = () => {
     deleteWordFromVocabulary();
   }, [wordToDelete]);
 
+  const [searchText, setSearchText] = useState();
+
+  const filtredVocabulary = useMemo(() => {
+    if(!searchText) {
+      return vocabulary;
+    }
+    return vocabulary.filter(word => word.toLowerCase().indexOf(searchText.toLowerCase()) === 0 )}, 
+      [vocabulary, searchText]);
+
   return (
     <section className="container">
       <div className="row">
@@ -100,10 +109,19 @@ const Uploader = () => {
             </form>
           </div>
         </div>
-        <div className="col-12 col-md-4">
+        <div className="col-12 col-md-4 scroll-block">
+          <div className="input-group mb-3">
+            <input type="text" value={searchText} 
+              onChange={event => setSearchText(event.target.value)} 
+              className="form-control" placeholder="Type tp search" 
+              aria-label="Type tp search" aria-describedby="basic-addon2"/>
+            <div className="input-group-append">
+              <i className="input-group-text fa fa-search text-warning" />
+            </div>
+          </div>
           <ul className="list-group scroll-list">
-            {vocabulary &&
-              vocabulary.map(wrd => (
+            {filtredVocabulary &&
+              filtredVocabulary.map(wrd => (
                 <li className="list-group-item" key={wrd}>
                   <div className="container-fluid">
                     <div className="float-left mt-3">

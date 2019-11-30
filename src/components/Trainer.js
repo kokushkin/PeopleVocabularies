@@ -103,7 +103,7 @@ const Trainer = () => {
             </form>
           </div>
         </div>
-        <div className="col-12 col-md-4">
+        <div className="col-12 col-md-4 scroll-block">
           <ul className="list-group scroll-list">
             {wordsFromText &&
               wordsFromText.map(wrd => (
