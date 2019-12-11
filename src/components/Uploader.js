@@ -94,7 +94,7 @@ const Uploader = () => {
                   rows="15"
                 />
               </div>
-              <div class="d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <button
                   type="submit"
                   onClick={event => {
