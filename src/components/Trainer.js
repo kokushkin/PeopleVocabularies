@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
-
+import TrainerListWord from "./TrainerListWord";
 import 'bootstrap';
 
 var GET_UNKNOWN_WORDS_BY_TEXT = `query getUnknownWordsByText($text: String!){
-  getUnknownWordsByText(text: $text)
+  getUnknownWordsByText(text: $text) {
+    words {
+      word
+      translations
+    }
+  }
 }`;
 
 var ADD_WORD_TO_VOCABULARY = `mutation AddWordToVocabluary($word: String!){
@@ -29,7 +34,7 @@ const Trainer = () => {
               text: textForAnalyze
             })
           );
-          setWordsFromText(result.data.getUnknownWordsByText);
+          setWordsFromText(result.data.getUnknownWordsByText.words);
           setFirstPass(true);
           console.log("We get new words from Analize");
         } catch (ex) {
@@ -49,7 +54,7 @@ const Trainer = () => {
         try {
           await API.graphql(
             graphqlOperation(ADD_WORD_TO_VOCABULARY, {
-              word: wordToVocabulary
+              word: wordToVocabulary.word
             })
           );
           console.log("We added new word");
@@ -88,7 +93,7 @@ const Trainer = () => {
                   rows="15"
                 />
               </div>
-              <div class="d-flex justify-content-end">
+              <div className="d-flex justify-content-end">
                 <button
                   type="submit"
                   onClick={event => {
@@ -107,34 +112,17 @@ const Trainer = () => {
           <ul className="list-group scroll-list">
             {wordsFromText &&
               wordsFromText.map(wrd => (
-                <li className="list-group-item" key={wrd}>
-                  <div className="container-fluid">
-                    <div className="float-left mt-3">
-                      <span>{wrd}</span>
-                    </div>
-                    {/* KNOWN word button */}
-                    <button
-                      className="btn  float-right"
-                      onClick={() => {
-                        if(firstPass)
-                          setWordToVocabulary(wrd);
-                        else
-                          excludeWordFromList(wrd);                     
-                      }}
-                    >
-                      <i className="fa fa-2x fa-glass text-success" />
-                    </button>
-                    {/* UNKNOWN word button */}
-                    <button
-                      className="btn  float-right"
-                      onClick={() => {
-                          excludeWordFromList(wrd);
-                          setUnknownWords(words => words.concat(wrd));
-                        }}>
-                      <i className="fa fa-2x fa-check text-warning" />
-                    </button>
-                  </div>
-                </li>
+                <TrainerListWord key={wrd.word} word={wrd} 
+                onKnown={() => {
+                  if(firstPass)
+                    setWordToVocabulary(wrd);
+                  else
+                    excludeWordFromList(wrd);                     
+                }} 
+                onUnknown={() => {
+                  excludeWordFromList(wrd);
+                  setUnknownWords(words => words.concat(wrd));
+                }}/>
               ))}
           </ul>
         </div>
