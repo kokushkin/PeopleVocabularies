@@ -1,3 +1,0 @@
-{"exclusion-words": [
-{"PutRequest":{"Item": {"lemma": {"S": "arise"}, "exclusions": {"L": [{"S": "arose"}, {"S": "arisen"}] } }}},
-{"PutRequest":{"Item": {"lemma": {"S": "awake"}, "exclusions": {"L": [{"S": "awoke"}, {"S": "awoken"}] } }}} ]}
