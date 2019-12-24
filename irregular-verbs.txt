@@ -1,5 +1,5 @@
-"arise","arose","arisen"
-"awake","awoke","awoken"
+{"PutRequest":{"Item": {"lemma": {"S": "arise"}, "exclusions": {"L": [{"S": "arose"}, {"S": "arisen"}] } }}}
+{"PutRequest":{"Item": {"lemma": {"S": "awake"}, "exclusions": {"L": [{"S": "awoke"}, {"S": "awoken"}] } }}}
 "be","was/were","been"
 "bear","bore","born(e)"
 "beat","beat","beaten"
