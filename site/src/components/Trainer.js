@@ -9,6 +9,7 @@ var GET_UNKNOWN_WORDS_BY_TEXT = `query getUnknownWordsByText($text: String!){
     words {
       word
       translations
+      exclusionForms
     }
   }
 }`;

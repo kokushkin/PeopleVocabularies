@@ -102,8 +102,73 @@ exports.handler = async (event) => {
         }});
       
     }));
-    
-    console.log(unknownWordsAndTheirTranslations);
-    
-    return {words: unknownWordsAndTheirTranslations};
+
+
+    unknownWordsAndTheirTranslations = unknownWordsAndTheirTranslations.map(wordAndTranslation => {return {...wordAndTranslation, exclusionForms: []}});
+
+    let unknownWordsAndExclusions = await getExclusionsByWords(unknownWords);
+
+    let unknownWordsWithTranslationsAndExclusions = 
+      leftJoinArrays(unknownWordsAndTheirTranslations, unknownWordsAndExclusions);
+  
+    return {words: unknownWordsWithTranslationsAndExclusions};
 };
+
+const leftJoinArrays = (arr1, arr2) => {
+  const sortedArr2 = _.sortBy(arr2, el => el.word);
+  const sortedArrKeys = sortedArr2.map(el => el.word);
+  return arr1.map(el1 => {
+    return _.assign(el1, sortedArr2[_.sortedIndexOf(sortedArrKeys, el1.word)]);
+  });
+};
+
+
+const getExclusionsByWords = async (words) => {
+  const MAX_AMAZON_DB_GET_BATCH_LIMIT = 100;
+  const chunks = _(words).chunk(MAX_AMAZON_DB_GET_BATCH_LIMIT).value();
+  const chuncksWithExclusions = [];
+  for (let ch of chunks) {
+    const chWithExcl = await getExlusionsForChunk(ch);
+    chuncksWithExclusions.push(chWithExcl);
+  }
+  return _(chuncksWithExclusions)
+    .flatten()
+    .value();
+}
+
+const getExlusionsForChunk = async (chunkOfWords) => {
+   //load words from DB
+   const chunkKeys = _(chunkOfWords).map(word => {
+     return {
+       "lemma":{"S": word}
+     }
+   }).value();
+   console.log(chunkKeys);
+   let query = {
+      RequestItems: {
+        "exclusion-words": {
+          Keys: chunkKeys
+        }
+      }
+    };
+
+  let wordsAndExclusions = [];
+  
+  try {
+    const data = await dynamodb.batchGetItem(query).promise();
+    wordsAndExclusions = _(data["Responses"]["exclusion-words"])
+        .map(row => {
+          return {
+            word: row["lemma"]["S"],
+            exclusionForms: _(row["exclusions"]["L"]).map(excl => excl["S"]).value()};
+        })
+        .value();
+    
+  } catch (error) {
+    console.log("Error", error);
+  }
+  
+
+  return wordsAndExclusions;
+};
+

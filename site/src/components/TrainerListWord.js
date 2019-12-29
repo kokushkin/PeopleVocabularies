@@ -31,6 +31,10 @@ const TrainerListWord = ({word, onKnown, onUnknown}) => {
                         </button>
                     </div>
                 </div>
+                {showWordTranslations && word.exclusionForms && 
+                    <div className="row">
+                        {word.exclusionForms.join(', ')}
+                    </div>}
                 <div className="row">
                     {showWordTranslations && word.translations.join(', ')}
                 </div>
