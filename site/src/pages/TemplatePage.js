@@ -12,6 +12,7 @@ import { LogOut } from "../components/LogOut";
 import Trainer from "../components/Trainer";
 import Uploader from "../components/Uploader";
 import Landing from "../components/Landing";
+import Translator from "../components/Translator"
 import { useLoggedInUser } from "../hooks/useLoggedInUser";
 
 
@@ -68,6 +69,13 @@ function TemplatePage() {
                   </a>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/translator">
+                  <a className="nav-link" href="#">
+                    Translator
+                  </a>
+                </Link>
+              </li>
             </ul>
             {user && <LogOut onLogout={() => logOut()} user={user}/>}                    
           </div>
@@ -81,6 +89,7 @@ function TemplatePage() {
               <Landing path="/"/>
               <Trainer path="/trainer" onLogin={getUser}/>
               <Uploader path="/uploader" onLogin={getUser}/>
+              <Translator path="/translator" onLogin={getUser}/>
             </Router>
           </div>       
         </div>
