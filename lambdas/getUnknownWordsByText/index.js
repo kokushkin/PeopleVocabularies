@@ -21,7 +21,7 @@ exports.handler = async (event) => {
     
     console.log(params);
     
-    let words = await (new Promise((resolve, reject) => {
+    let items = await (new Promise((resolve, reject) => {
        lambda.invoke(params, function(err, data) {
         if (err) {
           console.log("Error", err);
@@ -35,7 +35,8 @@ exports.handler = async (event) => {
     }));
     
     //order the words according to how ofter they encounter
-    words = _(words)
+    let words = _(items)
+      .map(item => item.lemma)
       .groupBy(wrd => wrd)
       .mapValues((value, key) => {
         return { word: key, count: value.length };
@@ -106,10 +107,39 @@ exports.handler = async (event) => {
 
     unknownWordsAndTheirTranslations = unknownWordsAndTheirTranslations.map(wordAndTranslation => {return {...wordAndTranslation, exclusionForms: []}});
 
-    let unknownWordsAndExclusions = await getExclusionsByWords(unknownWords);
+
+    const getExclusionsByWordsPayloadStr = JSON.stringify({words: unknownWords});
+    
+    const paramsGetExclusionsByWords = {
+      FunctionName: 'getExclusionsByWords',
+      InvocationType: 'RequestResponse',
+      LogType: 'Tail',
+      Payload: getExclusionsByWordsPayloadStr
+    };
+    
+    
+    console.log(paramsGetExclusionsByWords);
+  
+    let unknownWordsAndExclusions = await (new Promise((resolve, reject) => {
+      lambda.invoke(paramsGetExclusionsByWords, function(err, data) {
+        if (err) {
+          console.log("Error", err);
+          reject(err);
+        } else {
+          console.log(data);
+          console.log("Success", data);
+          resolve(JSON.parse(data.Payload).body);
+        }});
+      
+    }));
+    
+    console.log("before join")
+    console.log(unknownWordsAndExclusions);
+    console.log(unknownWordsAndTheirTranslations);
 
     let unknownWordsWithTranslationsAndExclusions = 
       leftJoinArrays(unknownWordsAndTheirTranslations, unknownWordsAndExclusions);
+    console.log(unknownWordsWithTranslationsAndExclusions)
   
     return {words: unknownWordsWithTranslationsAndExclusions};
 };
@@ -120,55 +150,5 @@ const leftJoinArrays = (arr1, arr2) => {
   return arr1.map(el1 => {
     return _.assign(el1, sortedArr2[_.sortedIndexOf(sortedArrKeys, el1.word)]);
   });
-};
-
-
-const getExclusionsByWords = async (words) => {
-  const MAX_AMAZON_DB_GET_BATCH_LIMIT = 100;
-  const chunks = _(words).chunk(MAX_AMAZON_DB_GET_BATCH_LIMIT).value();
-  const chuncksWithExclusions = [];
-  for (let ch of chunks) {
-    const chWithExcl = await getExlusionsForChunk(ch);
-    chuncksWithExclusions.push(chWithExcl);
-  }
-  return _(chuncksWithExclusions)
-    .flatten()
-    .value();
-}
-
-const getExlusionsForChunk = async (chunkOfWords) => {
-   //load words from DB
-   const chunkKeys = _(chunkOfWords).map(word => {
-     return {
-       "lemma":{"S": word}
-     }
-   }).value();
-   console.log(chunkKeys);
-   let query = {
-      RequestItems: {
-        "exclusion-words": {
-          Keys: chunkKeys
-        }
-      }
-    };
-
-  let wordsAndExclusions = [];
-  
-  try {
-    const data = await dynamodb.batchGetItem(query).promise();
-    wordsAndExclusions = _(data["Responses"]["exclusion-words"])
-        .map(row => {
-          return {
-            word: row["lemma"]["S"],
-            exclusionForms: _(row["exclusions"]["L"]).map(excl => excl["S"]).value()};
-        })
-        .value();
-    
-  } catch (error) {
-    console.log("Error", error);
-  }
-  
-
-  return wordsAndExclusions;
 };
 
