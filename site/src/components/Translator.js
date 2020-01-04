@@ -91,7 +91,7 @@ const Translator = () => {
 
                     <div className="form-group">
                         <label htmlFor="context">Context</label>
-                        <textarea className="form-control" id="context" rows="2" defaultValue="I saw this guy." />
+                        <textarea className="form-control" id="context" rows="6" defaultValue="I saw this guy." />
                     </div>
                     <div className="form-group">
                         <label htmlFor="word">Word</label>
@@ -100,16 +100,11 @@ const Translator = () => {
                     <div className="d-flex justify-content-end">
                         <button type="submit" className="btn btn-success">Translate</button>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="contextTranslation">Context translation</label>
-                        <textarea readOnly={true} className="form-control bg-white" 
-                            id="contextTranslation" rows="2" value={contextTranslation} 
-                            defaultValue="Я видел этого парня" />
-                    </div>
+
                     {vocabularyWord && 
                         <div className="form-group">
                             <label>In vocabulary this word would match to</label>
-                            <div className="card big-bottom-margin">
+                            <div className="card">
                                     <h3 className="card-header">{vocabularyWord}</h3>
                                     <div className="card-body">
                                         {exclusionForms &&
@@ -129,6 +124,14 @@ const Translator = () => {
                                     
                             </div>
                         </div>}
+
+                    <div className="form-group big-bottom-margin">
+                        <label htmlFor="contextTranslation">Context translation</label>
+                        <textarea readOnly={true} className="form-control bg-white" 
+                            id="contextTranslation" rows="6" value={contextTranslation} 
+                            defaultValue="Я видел этого парня" />
+                    </div>
+
                     
                 </form>
            </div>
