@@ -4,7 +4,6 @@ import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator
 
 
 import 'bootstrap';
-import { async } from "q";
 
 const GET_VOCABULARY = `query {
   getVocabulary {
