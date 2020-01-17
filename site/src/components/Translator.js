@@ -91,11 +91,11 @@ const Translator = () => {
 
                     <div className="form-group">
                         <label htmlFor="context">Context</label>
-                        <textarea className="form-control" id="context" rows="6" defaultValue="I saw this guy." />
+                        <textarea className="form-control" id="context" rows="6" placeholder="I saw this guy."/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="word">Word</label>
-                        <input type="text" className="form-control" id="word" defaultValue="saw"/>
+                        <input type="text" className="form-control" id="word" placeholder="saw"/>
                     </div>
                     <div className="d-flex justify-content-end">
                         <button type="submit" className="btn btn-success">Translate</button>

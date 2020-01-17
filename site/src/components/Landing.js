@@ -45,7 +45,7 @@ const Landing = () => {
               As you're going through the process of learning something you are forgetting as well. So that's why we give you a way how to correct your vocabulary when you translate. You can use it as a regular translator and kick off words from vocabulary if you understand you don't know them.
               </p>
               <Link to="/translator">
-                <div class="d-flex justify-content-end">
+                <div className="d-flex justify-content-end">
                   <a className="btn btn-success btn-lg" href="" role="button">Translate and correct</a>
                 </div>
               </Link>
