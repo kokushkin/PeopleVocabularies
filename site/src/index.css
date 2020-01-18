@@ -12,6 +12,13 @@ code {
     monospace;
 } */
 
+
+
+
+
+html, body { height: 100%; margin: 0; }
+
+
 .navbar{
   background-color: #d7dbde!important;
 }
@@ -36,7 +43,6 @@ code {
 
 .jumbotron-corrector-translater{
   background-image: url(assets/corrector-translater.png);
-  margin-bottom: 100px !important;
 }
 
 
@@ -53,10 +59,6 @@ code {
     border-top: 1px solid rgba(0,0,0,.125);
     border-bottom: 1px solid rgba(0,0,0,.125);
   }
-}
-
-.big-bottom-margin {
-  margin-bottom: 80px;
 }
 
 

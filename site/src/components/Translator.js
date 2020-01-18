@@ -125,7 +125,7 @@ const Translator = () => {
                             </div>
                         </div>}
 
-                    <div className="form-group big-bottom-margin">
+                    <div className="form-group">
                         <label htmlFor="contextTranslation">Context translation</label>
                         <textarea readOnly={true} className="form-control bg-white" 
                             id="contextTranslation" rows="6" value={contextTranslation} 

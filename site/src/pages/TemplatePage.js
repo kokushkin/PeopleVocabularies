@@ -82,7 +82,7 @@ function TemplatePage() {
         </nav>
       </header>
 
-      <section className="container">
+      <section className="container" style={{minHeight:"90%"}}>
         <div className="row">
           <div className="col-12">
             <Router>
@@ -95,11 +95,11 @@ function TemplatePage() {
         </div>
       </section>
 
-      <footer className="footer bg-light fixed-bottom py-4">
+    <footer className="footer bg-light py-4">
         <div className="container text-center">
           Copyright &copy; peoplevocabularies.com
         </div>
-      </footer>
+    </footer>
     </>
   );
 }
