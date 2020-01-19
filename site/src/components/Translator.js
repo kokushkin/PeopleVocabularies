@@ -90,8 +90,8 @@ const Translator = () => {
                     setWord(e.target.word.value);}}>
 
                     <div className="form-group">
-                        <label htmlFor="context">Context</label>
-                        <textarea className="form-control" id="context" rows="6" placeholder="I saw this guy."/>
+                        <label htmlFor="context">Context (optional but useful)</label>
+                        <textarea className="form-control" id="context" rows="6" placeholder="I saw them last Monday."/>
                     </div>
                     <div className="form-group">
                         <label htmlFor="word">Word</label>
@@ -129,7 +129,7 @@ const Translator = () => {
                         <label htmlFor="contextTranslation">Context translation</label>
                         <textarea readOnly={true} className="form-control bg-white" 
                             id="contextTranslation" rows="6" value={contextTranslation} 
-                            defaultValue="Я видел этого парня" />
+                            defaultValue="Я видел их в прошлый понедельник." />
                     </div>
 
                     
