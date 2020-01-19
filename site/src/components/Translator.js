@@ -30,7 +30,8 @@ const Translator = () => {
   const [vocabularyWord, setVocabularyWord] = useState();
   const [exclusionForms, setExclusionForms] = useState([]);
   const [translations, setTranslations] = useState([]);
-  const [inVocabulary, setInVocabulary] = useState(false);
+  const [inVocabulary, setInVocabulary] = useState();
+  const [noTranslation, setNoTranslation] = useState(false);
 
 
   useEffect(() => {
@@ -45,9 +46,14 @@ const Translator = () => {
             })
           );
           setContextTranslation(result.data.translateWord.contextTranslation);
-          setVocabularyWord(result.data.translateWord.wordDescription.word);
-          setExclusionForms(result.data.translateWord.wordDescription.exclusionForms);
-          setTranslations(result.data.translateWord.wordDescription.translations);
+          if(result.data.translateWord.wordDescription) {
+            setVocabularyWord(result.data.translateWord.wordDescription.word);
+            setExclusionForms(result.data.translateWord.wordDescription.exclusionForms);
+            setTranslations(result.data.translateWord.wordDescription.translations);
+          }
+          else {
+            setNoTranslation(true);
+          }
           setInVocabulary(result.data.translateWord.inVocabulary);
         } catch (ex) {
           console.log(ex);
@@ -87,7 +93,14 @@ const Translator = () => {
                 <form onSubmit={e => {
                     e.preventDefault();
                     setContext(e.target.context.value);
-                    setWord(e.target.word.value);}}>
+                    setWord(e.target.word.value);
+                    setContextTranslation(undefined);
+                    setVocabularyWord(undefined);
+                    setExclusionForms(undefined);
+                    setTranslations(undefined);
+                    setInVocabulary(undefined);
+                    setNoTranslation(false);
+                    }}>
 
                     <div className="form-group">
                         <label htmlFor="context">Context (optional but useful)</label>
@@ -101,7 +114,7 @@ const Translator = () => {
                         <button type="submit" className="btn btn-success">Translate</button>
                     </div>
 
-                    {vocabularyWord && 
+                    {vocabularyWord ? (
                         <div className="form-group">
                             <label>In vocabulary this word would match to</label>
                             <div className="card">
@@ -109,8 +122,7 @@ const Translator = () => {
                                     <div className="card-body">
                                         {exclusionForms &&
                                             <h4 class="card-title">{exclusionForms.join(', ')}</h4>}
-                                        
-                                        <p class="card-text">{translations.join(', ')}</p>
+                                        {translations && <p className="card-text">{translations.join(', ')}</p>}
                                     </div>
                                     {inVocabulary && 
                                         <div className="container-fluid card-footer">
@@ -123,7 +135,10 @@ const Translator = () => {
                                         </div>}
                                     
                             </div>
-                        </div>}
+                    </div>) : (noTranslation && (
+                    <div className="form-group">
+                        <label><span className="text-danger">Sorry, we could not find any translation for this word for the given context.</span></label>
+                    </div>))}
 
                     <div className="form-group">
                         <label htmlFor="contextTranslation">Context translation</label>
