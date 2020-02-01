@@ -6,11 +6,12 @@ const _ = require('lodash');
 
 exports.handler = async (event) => {
     // TODO implement
-    console.log(event);
+    //console.log(event);
+    console.log("Start");
     
     const payloadStr = JSON.stringify({text: event.args.text});
     
-    console.log(payloadStr);
+    //console.log(payloadStr);
     
     const params = {
         FunctionName: 'splitTextInWords',
@@ -19,7 +20,7 @@ exports.handler = async (event) => {
         Payload: payloadStr
     };
     
-    console.log(params);
+    //console.log(params);
     
     let items = await (new Promise((resolve, reject) => {
        lambda.invoke(params, function(err, data) {
@@ -33,8 +34,10 @@ exports.handler = async (event) => {
         }});
       
     }));
+
+    console.log("splitTextInWords finished!")
     
-    //order the words according to how ofter they encounter
+    //order the words according to how often they encounter
     let words = _(items)
       .map(item => item.lemma)
       .groupBy(wrd => wrd)
@@ -46,7 +49,9 @@ exports.handler = async (event) => {
       .map(wordCount => wordCount.word)
       //.mapKeys((value, key) => value.length)
       .value();
-    console.log(words);
+
+    //console.log(words);
+    console.log("Ordering words by frequency finished!")
     
     
     //load words from DB
@@ -63,7 +68,7 @@ exports.handler = async (event) => {
       if (err) {
         console.log("Error", err);
       } else {
-        console.log("Success", data.Item);
+        //console.log("Success", data.Item);
         
         // we have to check, because dynamo doesn't keep empty collections
         let vocabularyWords = [];
@@ -79,6 +84,8 @@ exports.handler = async (event) => {
         unknownWords = Array.from(wordsSet);
       }
     }).promise();
+
+    console.log("Got words from vocabulary and calculated unknown words");
     
     
     const unknownWordsStr = JSON.stringify({words: unknownWords});
@@ -97,15 +104,16 @@ exports.handler = async (event) => {
           console.log("Error", err);
           reject(err);
         } else {
-          console.log(data);
-          console.log("Success", data);
+          //console.log(data);
+          //console.log("Success", data);
           resolve(JSON.parse(data.Payload).body);
         }});
       
     }));
 
-
     unknownWordsAndTheirTranslations = unknownWordsAndTheirTranslations.map(wordAndTranslation => {return {...wordAndTranslation, exclusionForms: []}});
+
+    console.log("Got translations of unknown words");
 
 
     const getExclusionsByWordsPayloadStr = JSON.stringify({words: unknownWords});
@@ -118,7 +126,7 @@ exports.handler = async (event) => {
     };
     
     
-    console.log(paramsGetExclusionsByWords);
+    //console.log(paramsGetExclusionsByWords);
   
     let unknownWordsAndExclusions = await (new Promise((resolve, reject) => {
       lambda.invoke(paramsGetExclusionsByWords, function(err, data) {
@@ -126,20 +134,23 @@ exports.handler = async (event) => {
           console.log("Error", err);
           reject(err);
         } else {
-          console.log(data);
-          console.log("Success", data);
+          //console.log(data);
+          //console.log("Success", data);
           resolve(JSON.parse(data.Payload).body);
         }});
       
     }));
+
+    console.log("Got exclusions of unknown words");
     
-    console.log("before join")
-    console.log(unknownWordsAndExclusions);
-    console.log(unknownWordsAndTheirTranslations);
+    //console.log("before join")
+    //console.log(unknownWordsAndExclusions);
+    //console.log(unknownWordsAndTheirTranslations);
 
     let unknownWordsWithTranslationsAndExclusions = 
       leftJoinArrays(unknownWordsAndTheirTranslations, unknownWordsAndExclusions);
-    console.log(unknownWordsWithTranslationsAndExclusions)
+    //console.log(unknownWordsWithTranslationsAndExclusions)
+    console.log("Translations and exclusions has been joined! Finish.");
   
     return {words: unknownWordsWithTranslationsAndExclusions};
 };
