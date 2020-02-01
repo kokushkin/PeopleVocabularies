@@ -28,8 +28,8 @@ exports.handler = async (event) => {
           console.log("Error", err);
           reject(err);
         } else {
-          console.log(data);
-          console.log("Success", data);
+          //console.log(data);
+          //console.log("Success", data);
           resolve(JSON.parse(data.Payload).body);
         }});
       
