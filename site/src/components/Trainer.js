@@ -103,7 +103,7 @@ const Trainer = () => {
                   }}
                   className="btn btn-success mb-3"
                 >
-                  Analise
+                  Analize
                 </button>
               </div>
             </form>
