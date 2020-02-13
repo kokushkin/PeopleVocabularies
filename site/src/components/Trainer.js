@@ -3,6 +3,7 @@ import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 import TrainerListWord from "./TrainerListWord";
 import 'bootstrap';
+import { LoadingArea } from "./LoadingArea";
 
 var GET_UNKNOWN_WORDS_BY_TEXT = `query getUnknownWordsByText($text: String!){
   getUnknownWordsByText(text: $text) {
@@ -23,11 +24,14 @@ var ADD_WORD_TO_VOCABULARY = `mutation AddWordToVocabluary($word: String!){
 
 const Trainer = () => {
   const [wordsFromText, setWordsFromText] = useState([]);
+  const [processing, setProcessing] = useState();
   
   //analize text
   const textElement = useRef(null);
-  const [textForAnalyze, setTextForAnalyze] = useState("");
+  const [textForAnalyze, setTextForAnalyze] = useState();
   useEffect(() => {
+    if(!textForAnalyze)
+      return;
     const getUnknownWordsByText = async () => {
         try {
           const result = await API.graphql(
@@ -37,12 +41,15 @@ const Trainer = () => {
           );
           setWordsFromText(result.data.getUnknownWordsByText.words);
           setFirstPass(true);
+          setProcessing(false);
           console.log("We get new words from Analize");
         } catch (ex) {
+          setProcessing(undefined);
           console.log(ex);
         }
     };
     getUnknownWordsByText();
+    setProcessing(true);
   }, [textForAnalyze]);
 
   const excludeWordFromList = useCallback(word => 
@@ -103,16 +110,16 @@ const Trainer = () => {
                   }}
                   className="btn btn-success mb-3"
                 >
-                  Analize
+                  {processing && 
+                    <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"/>}Analize
                 </button>
               </div>
             </form>
           </div>
         </div>
         <div className="col-12 col-md-4 scroll-block">
-          <ul className="list-group scroll-list">
-            {wordsFromText &&
-              wordsFromText.map(wrd => (
+         {processing === false && wordsFromText && wordsFromText.length > 0 ? (<ul className="list-group scroll-list">
+            {wordsFromText.map(wrd => (
                 <TrainerListWord key={wrd.word} word={wrd} 
                 onKnown={() => {
                   if(firstPass)
@@ -125,7 +132,8 @@ const Trainer = () => {
                   setUnknownWords(words => words.concat(wrd));
                 }}/>
               ))}
-          </ul>
+          </ul>):
+          processing === true ? (<LoadingArea/>) : null}
         </div>
       </div>
     </section>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
-
-
 import 'bootstrap';
+import { LoadingArea } from "./LoadingArea";
 
 const GET_VOCABULARY = `query {
   getVocabulary {
@@ -30,6 +29,7 @@ const Uploader = () => {
   const uploadTextElement = useRef(null);
   const [textForUplodaing, setTextForUplodaing] = useState("");
   const [vocabulary, setVocabulary] = useState([]);
+  const [processing, setProcessing] = useState();
   useEffect(() => {
     const uploadWellKnownText = async () => {
         try {
@@ -38,8 +38,10 @@ const Uploader = () => {
               text: uploadTextElement.current.value
             })
           );
+          setProcessing(false);
           console.log("We uploaded text!!!");
         } catch (ex) {
+          setProcessing(undefined);
           console.log(ex);
         }      
     };
@@ -48,6 +50,7 @@ const Uploader = () => {
         setVocabulary(result.data.getVocabulary.words);      
     };
     uploadWellKnownText().then(loadUserVocabulary);
+    setProcessing(true);
   }, [textForUplodaing, uploadTextElement]);
 
   // delete unknown word from vocabulary
@@ -102,7 +105,8 @@ const Uploader = () => {
                   }}
                   className="btn btn-success mb-3"
                 >
-                  Upload
+                  {processing && 
+                    <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"/>}Upload
                 </button>
               </div>
             </form>
@@ -118,7 +122,8 @@ const Uploader = () => {
               <i className="input-group-text fa fa-search text-warning" />
             </div>
           </div>
-          <ul className="list-group scroll-list">
+          {processing === false && filtredVocabulary && filtredVocabulary.length > 0 ? 
+          (<ul className="list-group scroll-list">
             {filtredVocabulary &&
               filtredVocabulary.map(wrd => (
                 <li className="list-group-item" key={wrd}>
@@ -134,7 +139,9 @@ const Uploader = () => {
                   </div>
                 </li>
               ))}
-          </ul>
+          </ul>) : processing === true ? (<LoadingArea/>) : null}
+
+
         </div>
       </div>
     </section>
