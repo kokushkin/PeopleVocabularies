@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import { API, graphqlOperation } from "aws-amplify";
 import withAugmentedAuthenticator from "../components/withAugmentedAuthenticator";
 import 'bootstrap';
+import { LoadingArea } from "./LoadingArea";
 
 
 const TRANSLATE_WORD = `query translateWord($context: String, $word: String!){
@@ -32,6 +33,7 @@ const Translator = () => {
   const [translations, setTranslations] = useState([]);
   const [inVocabulary, setInVocabulary] = useState();
   const [noTranslation, setNoTranslation] = useState(false);
+  const [processing, setProcessing] = useState();
 
 
   useEffect(() => {
@@ -55,11 +57,14 @@ const Translator = () => {
             setNoTranslation(true);
           }
           setInVocabulary(result.data.translateWord.inVocabulary);
+          setProcessing(false);
         } catch (ex) {
+          setProcessing(undefined);
           console.log(ex);
         }
     };
     translateWord();
+    setProcessing(true);
   }, [context, word]);
 
   // delete unknown word from vocabulary
@@ -111,43 +116,48 @@ const Translator = () => {
                         <input type="text" className="form-control" id="word" placeholder="saw"/>
                     </div>
                     <div className="d-flex justify-content-end">
-                        <button type="submit" className="btn btn-success">Translate</button>
+                        <button type="submit" className="btn btn-success">
+                          {processing && 
+                            <span className="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"/>}Translate
+                        </button>
                     </div>
 
-                    {vocabularyWord ? (
-                        <div className="form-group">
-                            <label>In vocabulary this word would match to</label>
-                            <div className="card">
-                                    <h3 className="card-header">{vocabularyWord}</h3>
-                                    <div className="card-body">
-                                        {exclusionForms &&
-                                            <h4 class="card-title">{exclusionForms.join(', ')}</h4>}
-                                        {translations && <p className="card-text">{translations.join(', ')}</p>}
-                                    </div>
-                                    {inVocabulary && 
-                                        <div className="container-fluid card-footer">
-                                            <div className="float-left mt-3">
-                                                <span className="text-danger">This word in your vocabulary, meens you should know it. Wanna delete?</span>
-                                            </div>
-                                            <button className="btn float-right" onClick={() => setWordToDelete(vocabularyWord)}>
-                                                <i className="fa fa-2x fa-times text-danger" />
-                                            </button>
-                                        </div>}
-                                    
-                            </div>
-                    </div>) : (noTranslation && (
-                    <div className="form-group">
-                        <label><span className="text-danger">Sorry, we could not find any translation for this word for the given context.</span></label>
-                    </div>))}
+                    {processing === false ? 
+                    (<>
+                      {vocabularyWord ? (
+                          <div className="form-group">
+                              <label>In vocabulary this word would match to</label>
+                              <div className="card">
+                                      <h3 className="card-header">{vocabularyWord}</h3>
+                                      <div className="card-body">
+                                          {exclusionForms &&
+                                              <h4 class="card-title">{exclusionForms.join(', ')}</h4>}
+                                          {translations && <p className="card-text">{translations.join(', ')}</p>}
+                                      </div>
+                                      {inVocabulary && 
+                                          <div className="container-fluid card-footer">
+                                              <div className="float-left mt-3">
+                                                  <span className="text-danger">This word in your vocabulary, meens you should know it. Wanna delete?</span>
+                                              </div>
+                                              <button className="btn float-right" onClick={() => setWordToDelete(vocabularyWord)}>
+                                                  <i className="fa fa-2x fa-times text-danger" />
+                                              </button>
+                                          </div>}
+                                      
+                              </div>
+                      </div>) : (noTranslation && (
+                      <div className="form-group">
+                          <label><span className="text-danger">Sorry, we could not find any translation for this word for the given context.</span></label>
+                      </div>))}
 
-                    <div className="form-group">
-                        <label htmlFor="contextTranslation">Context translation</label>
-                        <textarea readOnly={true} className="form-control bg-white" 
-                            id="contextTranslation" rows="6" value={contextTranslation} 
-                            defaultValue="Я видел их в прошлый понедельник." />
-                    </div>
-
-                    
+                      <div className="form-group">
+                          <label htmlFor="contextTranslation">Context translation</label>
+                          <textarea readOnly={true} className="form-control bg-white" 
+                              id="contextTranslation" rows="6" value={contextTranslation} 
+                              defaultValue="Я видел их в прошлый понедельник." />
+                      </div>
+                    </>) :
+                    processing === true  ? (<LoadingArea/>) : null}                   
                 </form>
            </div>
       </div>
