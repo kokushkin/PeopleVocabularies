@@ -1,8 +1,7 @@
 import React from "react";
-import { withAuthenticator } from "aws-amplify-react";
 import { useEffect } from "react";
 import RecaptchaConformation from "./RecaptchaConformation";
-import {  SignUp, SignIn } from 'aws-amplify-react'; 
+import { ConfirmSignUp, ForgotPassword, RequireNewPassword, SignIn, SignUp, VerifyContact, withAuthenticator } from 'aws-amplify-react';
  
 const withUser = BaseComponent => ({onLogin, ...props}) => {
 
@@ -14,6 +13,13 @@ const withUser = BaseComponent => ({onLogin, ...props}) => {
 };
 
 const withAugmentedAuthenticator = BaseComponent => 
-    (withAuthenticator(withUser(BaseComponent), false, [<SignIn/>,<RecaptchaConformation override={'ConfirmSignIn'}/>,<SignUp/>]));
+    (withAuthenticator(withUser(BaseComponent), false, [
+        <SignIn/>,
+        <RecaptchaConformation override={'ConfirmSignIn'}/>,
+        <VerifyContact/>,
+        <SignUp/>,
+        <ConfirmSignUp/>,
+        <ForgotPassword/>,
+        <RequireNewPassword />]));
 
 export default withAugmentedAuthenticator;
