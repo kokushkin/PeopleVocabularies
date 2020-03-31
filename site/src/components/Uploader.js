@@ -116,7 +116,7 @@ const Uploader = () => {
           <div className="input-group mb-3">
             <input type="text" value={searchText} 
               onChange={event => setSearchText(event.target.value)} 
-              className="form-control" placeholder="Type tp search" 
+              className="form-control" placeholder="Type to search" 
               aria-label="Type tp search" aria-describedby="basic-addon2"/>
             <div className="input-group-append">
               <i className="input-group-text fa fa-search text-warning" />

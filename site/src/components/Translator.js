@@ -137,7 +137,7 @@ const Translator = () => {
                                       {inVocabulary && 
                                           <div className="container-fluid card-footer">
                                               <div className="float-left mt-3">
-                                                  <span className="text-danger">This word in your vocabulary, meens you should know it. Wanna delete?</span>
+                                                  <span className="text-danger">This word is in your vocabulary, means you should know it. Wanna delete?</span>
                                               </div>
                                               <button className="btn float-right" onClick={() => setWordToDelete(vocabularyWord)}>
                                                   <i className="fa fa-2x fa-times text-danger" />
