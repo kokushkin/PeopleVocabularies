@@ -77,6 +77,7 @@ function TemplatePage() {
                 </Link>
               </li>
             </ul>
+            {!user && <a className="btn btn-warning btn-lg mr-2" href="https://www.youtube.com/watch?v=X4Rf8HiDtK0" role="button">Watch video about this site</a>}
             {user && <LogOut onLogout={() => logOut()} user={user}/>}                    
           </div>
         </nav>
