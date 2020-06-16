@@ -1,8 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import React, { useContext, useState } from "react";
+
+let x;
+
+const y: any = (v: any) => v;
 
 function App() {
+  const a = 5;
+  const [letter, setLetter] = useState("A");
   return (
     <div className="App">
       <header className="App-header">
