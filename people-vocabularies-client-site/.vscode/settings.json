@@ -1,6 +1,21 @@
 {
     "editor.fomatOnSave": true,
+    // disable VS code default formatter
+    "[javascript]": {
+        "editor.formatOnSave": false
+    },
+    "[typescript]": {
+        "editor.formatOnSave": false
+    },
+    // =========
     "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
-    "eslint.alwaysShowStatus": true
+    "eslint.alwaysShowStatus": true,
+    // because we run prettier through eslint
+    "prettier.disableLanguages": [
+        "js", "typescript"
+    ],
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+
 
 }
