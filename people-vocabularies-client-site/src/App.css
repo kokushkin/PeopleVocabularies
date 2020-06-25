@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,52 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+
+html, body { height: 100%; margin: 0; }
+
+
+.navbar{
+  background-color: #d7dbde!important;
 }
+
+.footer{
+  background-color: #d7dbde!important;
+}
+
+.jumbotron{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center top;
+}
+
+.jumbotron-trainer{
+  background-image: url(assets/trainer.png);
+}
+
+.jumbotron-uploader{
+  background-image: url(assets/uploader.png);
+}
+
+.jumbotron-corrector-translater{
+  background-image: url(assets/corrector-translater.png);
+}
+
+
+
+@media screen and (min-width: 767.98px) {
+
+  .scroll-block {
+    margin-top: 35px;
+  }
+
+  .scroll-list {
+    max-height: 700px;
+    overflow-y: scroll;
+    border-top: 1px solid rgba(0,0,0,.125);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+  }
+}
+
+
