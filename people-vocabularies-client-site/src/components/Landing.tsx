@@ -3,7 +3,7 @@ import { Link } from "@reach/router";
 
 import "bootstrap";
 
-const Landing = () => {
+const Landing = (props: any) => {
   return (
     <div>
       <section className="container mt-5">
