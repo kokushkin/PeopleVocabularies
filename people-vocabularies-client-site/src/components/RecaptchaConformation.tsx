@@ -34,7 +34,7 @@ class RecaptchaConformation extends ConfirmSignIn {
         </div>
       );
     } else {
-      return {};
+      return <div></div>;
     }
   }
 }
