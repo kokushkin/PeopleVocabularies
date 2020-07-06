@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { Auth } from "aws-amplify";
 
 export function useLoggedInUser() {
-  let [user, setUser] = useState(undefined);
+  let [user, setUser] = useState<any>(undefined);
 
   const logOut = useCallback(async () => {
     await Auth.signOut();
